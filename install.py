@@ -170,6 +170,7 @@ def aptSetup():
 	os.system('sudo mkdir -p /var/lib/grafana/dashboards')
 	os.system('sudo cp -f '+os.path.abspath(pathname)+'/conf/dashboard.json /var/lib/grafana/dashboards/')
 	os.system('sudo chown -hR grafana:grafana /var/lib/grafana/')
+	os.system('sudo rm -f /var/lib/grafana/dashboard.json')
 	# Final Grafana restart
 	os.system('sudo systemctl enable grafana-server')
 	os.system('sudo systemctl restart grafana-server')
