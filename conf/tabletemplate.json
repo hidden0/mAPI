@@ -1,0 +1,92 @@
+{
+  "datasource": "Postgres",
+  "columns": [],
+  "fontSize": "100%",
+  "gridPos": {
+    "h": 20,
+    "w": 7,
+    "x": 17,
+    "y": 0
+  },
+  "id": 14,
+  "options": {},
+  "pageSize": 10,
+  "showHeader": true,
+  "sort": {
+    "col": 0,
+    "desc": true
+  },
+  "styles": [
+    {
+      "alias": "Dashboard Link",
+      "colorMode": null,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "dateFormat": "YYYY-MM-DD HH:mm:ss",
+      "decimals": 2,
+      "link": true,
+      "mappingType": 1,
+      "pattern": "deviceurl",
+      "preserveFormat": false,
+      "sanitize": true,
+      "thresholds": [],
+      "type": "string",
+      "unit": "short"
+    },
+    {
+      "unit": "short",
+      "type": "string",
+      "alias": "Device Name",
+      "decimals": 2,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "colorMode": null,
+      "pattern": "devicename",
+      "dateFormat": "YYYY-MM-DD HH:mm:ss",
+      "thresholds": [],
+      "mappingType": 1,
+      "preserveFormat": true,
+      "sanitize": true
+    }
+  ],
+  "targets": [
+    {
+      "format": "table",
+      "group": [],
+      "metricColumn": "none",
+      "rawQuery": true,
+      "rawSql": "SELECT devicename, deviceurl\nFROM mnode\nWHERE org_id='574208952489738434' AND devStatus='offline'",
+      "refId": "A",
+      "select": [
+        [
+          {
+            "params": [
+              "value"
+            ],
+            "type": "column"
+          }
+        ]
+      ],
+      "timeColumn": "time",
+      "where": [
+        {
+          "name": "$__timeFilter",
+          "params": [],
+          "type": "macro"
+        }
+      ]
+    }
+  ],
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Offline Devices",
+  "transform": "table",
+  "transparent": true,
+  "type": "table"
+}

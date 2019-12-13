@@ -1,0 +1,82 @@
+{
+  "datasource": "Postgres",
+  "gridPos": {
+    "h": 6,
+    "w": 5,
+    "x": 0,
+    "y": 0
+  },
+  "id": 10,
+  "options": {
+    "showThresholdMarkers": true,
+    "showThresholdLabels": true,
+    "fieldOptions": {
+      "values": false,
+      "calcs": [
+        "last"
+      ],
+      "defaults": {
+        "min": 0,
+        "max": "52",
+        "thresholds": [
+          {
+            "color": "red",
+            "value": null
+          },
+          {
+            "color": "orange",
+            "value": 25
+          },
+          {
+            "color": "green",
+            "value": 47
+          }
+        ],
+        "mappings": [],
+        "title": "${__series.name} devices online"
+      },
+      "override": {}
+    },
+    "orientation": "auto"
+  },
+  "pluginVersion": "6.5.1",
+  "targets": [
+    {
+      "format": "time_series",
+      "group": [],
+      "metricColumn": "organization_name",
+      "rawQuery": true,
+      "rawSql": "SELECT\n  datecreated AS \"time\",\n  organization_name AS metric,\n  numonline\nFROM mnode_stats\nWHERE\n  organization_name = 'Escalations - SF - Repro'\nORDER BY 1,2",
+      "refId": "A",
+      "select": [
+        [
+          {
+            "params": [
+              "numonline"
+            ],
+            "type": "column"
+          }
+        ]
+      ],
+      "table": "mnode_stats",
+      "timeColumn": "datecreated",
+      "timeColumnType": "int4",
+      "where": [
+        {
+          "name": "",
+          "params": [
+            "value",
+            "=",
+            "value"
+          ],
+          "type": "expression"
+        }
+      ]
+    }
+  ],
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Devices Online",
+  "transparent": true,
+  "type": "gauge"
+}

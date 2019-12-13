@@ -1,0 +1,59 @@
+This monitor will perform the following:
+
+
+	- Install Grafana on CentOS VM:
+		wget https://dl.grafana.com/oss/release/grafana-6.5.1-1.x86_64.rpm
+		sudo yum localinstall grafana-6.5.1-1.x86_64.rpm
+
+	- Redirect port 80 to grafana on port 3000
+		sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+
+	- Install postgres
+		sudo yum install postgresql-server postgresql-contrib
+		sudo postgresql-setup initdb
+		sudo systemctl start postgresql
+		sudo systemctl enable postgresql
+
+	- Check for an api.key file in the present directory, or fail out.
+
+	- Build out the essential tables to track devices
+        sqlStats="""
+        CREATE TABLE mnode_stats (
+        id SERIAL PRIMARY KEY,
+        dateCreated integer,
+        node_row_id integer REFERENCES mnode(id),
+        organization_name varchar(128),
+        numOnline integer,
+        numAlerting integer,
+        numOffline integer
+        );
+        """
+        sqlNode="""
+        CREATE TABLE mnode (
+        id SERIAL PRIMARY KEY,
+        dateCreated integer,
+        org_row_id integer REFERENCES mnode_org(id),
+        macAddr varchar(32),
+        deviceName varchar(64),
+        deviceModel varchar(32),
+        deviceSerial varchar(16),
+        deviceNetwork varchar(64),
+        deviceUrl varchar
+        );
+        """
+        sqlOrg="""
+        CREATE TABLE mnode_org (
+        id SERIAL PRIMARY KEY,
+        dateCreated integer,
+        organization_id integer,
+        organization_name varchar(128),
+        organization_url varchar(512),
+        totalDevices integer
+        );
+	- For each organization, pull device status:
+		curl -L -H 'X-Cisco-Meraki-API-Key: <key>' \
+		-H 'Content-Type: application/json' -X \
+		GET 'https://api.meraki.com/api/v0/organizations/{organizationId}/deviceStatuses'
+
+	- Store device status in mnode_stats, and check again in 1 minute.
+"""
