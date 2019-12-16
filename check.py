@@ -38,8 +38,12 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['panels'][0]['targets'][0]['y'] = 6
 	dashboard['panels'][0]['targets'][0]['rawSql'] = "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online') AS metric,\n  numonline\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	dashboard['panels'][0]['targets'][0]['refId'] = "A"
-	dashboard['panels'][0]['targets'][0]['select'] = None
+	dashboard['panels'][0]['targets'] = None
 
+	targetTmpA = {
+		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Online\') AS metric,\n  numonline\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
+		"refId":"A"
+	}
 	targetTmpB = {
 		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Alerting\') AS metric,\n  numalerting\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
 		"refId":"B"
@@ -48,6 +52,7 @@ def buildDashboards(orgName, orgId, totalDev):
 		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Offline\') AS metric,\n  numoffline\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
 		"refId":"C"
 	}
+	dashboard['panels'][0]['targets'].append(targetTmpA)
 	dashboard['panels'][0]['targets'].append(targetTmpB)
 	dashboard['panels'][0]['targets'].append(targetTmpC)
 	slackInt = False
