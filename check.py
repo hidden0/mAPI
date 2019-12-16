@@ -124,7 +124,7 @@ def buildDashboards(orgName, orgId, totalDev):
 	try:
 		f = open("filename.txt")
 		# Do something with the file
-		slackint = True
+		slackInt = True
 		f.close()
 	except IOError:
 		slackInt = False
