@@ -38,19 +38,85 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['panels'][0]['targets'][0]['y'] = 6
 	dashboard['panels'][0]['targets'][0]['rawSql'] = "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online') AS metric,\n  numonline\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	dashboard['panels'][0]['targets'][0]['refId'] = "A"
-	dashboard['panels'][0]['targets'] = {}
+	dashboard['panels'][0].pop("targets")
 
 	targetTmpA = {
-		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Online\') AS metric,\n  numonline\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
-		"refId":"A"
+	"refId": "A",
+	"format": "time_series",
+	"timeColumn": "time",
+	"metricColumn": "none",
+	"group": [],
+	"where": [
+		{
+			"type": "macro",
+			"name": "$__timeFilter",
+			"params": []
+		}
+	],
+	"select": [
+		[
+			{
+			"type": "column",
+			"params": [
+				"value"
+				]
+			}
+		]
+	],
+	"rawQuery": true,
+	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online') AS metric,\n  numonline as \"Devices Online\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
 	targetTmpB = {
-		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Alerting\') AS metric,\n  numalerting\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
-		"refId":"B"
+	"refId": "B",
+	"format": "time_series",
+	"timeColumn": "time",
+	"metricColumn": "none",
+	"group": [],
+	"where": [
+		{
+			"type": "macro",
+			"name": "$__timeFilter",
+			"params": []
+		}
+	],
+	"select": [
+		[
+			{
+			"type": "column",
+			"params": [
+				"value"
+				]
+			}
+		]
+	],
+	"rawQuery": true,
+	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Alerting') AS metric,\n  numalerting as \"Devices Alerting\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
 	targetTmpC = {
-		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Offline\') AS metric,\n  numoffline\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
-		"refId":"C"
+	"refId": "C",
+	"format": "time_series",
+	"timeColumn": "time",
+	"metricColumn": "none",
+	"group": [],
+	"where": [
+		{
+			"type": "macro",
+			"name": "$__timeFilter",
+			"params": []
+		}
+	],
+	"select": [
+		[
+			{
+			"type": "column",
+			"params": [
+				"value"
+				]
+			}
+		]
+	],
+	"rawQuery": true,
+	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Offline') AS metric,\n  numoffline as \"Devices Offline\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
 	dashboard['panels'][0]['targets'].append(targetTmpA)
 	dashboard['panels'][0]['targets'].append(targetTmpB)
