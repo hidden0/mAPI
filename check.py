@@ -63,7 +63,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			}
 		]
 	],
-	"rawQuery": true,
+	"rawQuery": "true",
 	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online') AS metric,\n  numonline as \"Devices Online\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
 	targetTmpB = {
@@ -89,7 +89,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			}
 		]
 	],
-	"rawQuery": true,
+	"rawQuery": "true",
 	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Alerting') AS metric,\n  numalerting as \"Devices Alerting\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
 	targetTmpC = {
@@ -115,7 +115,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			}
 		]
 	],
-	"rawQuery": true,
+	"rawQuery": "true",
 	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Offline') AS metric,\n  numoffline as \"Devices Offline\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
 	dashboard['panels'][0]['targets'].append(targetTmpA)
