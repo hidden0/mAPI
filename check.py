@@ -122,7 +122,7 @@ def buildDashboards(orgName, orgId, totalDev):
 
 	# Check for a file existing
 	try:
-		f = open("filename.txt")
+		f = open("./slack_setup_true")
 		# Do something with the file
 		slackInt = True
 		f.close()
