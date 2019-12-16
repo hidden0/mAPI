@@ -1,0 +1,19 @@
+notifiers:
+  - name: Slack Bot
+    type: slack
+    uid: notifier1
+    # either
+    org_id: 1
+    # or
+    org_name: default
+    is_default: true
+    send_reminder: true
+    frequency: 1h
+    disable_resolve_message: false
+    # See `Supported Settings` section for settings supporter for each
+    # alert notification type.
+    settings:
+      recipient: "#alerts"
+      token: ""
+      uploadImage: true
+      url: https://slack.com

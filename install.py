@@ -211,13 +211,49 @@ def aptSetup():
 	os.system('sudo crontab '+os.path.abspath(pathname)+'/mycron')
 	os.system('sudo rm -f '+os.path.abspath(pathname)+'/mycron')
 
+# Ask slack API questions:
+def getSlack():
+	print(colorize("Slack Integration Setup","yellow"))
+	print("\nTo configure a slack notification channel, this script will ask a few questions.\n")
+
+	print("To set up slack you need to configure an incoming webhook url at slack on your own workspace. You can follow their guide on how to do that here:\n")
+	print(colorize("https://api.slack.com/apps?new_app=1","green"))
+
+	print("What is your "+colorize("incoming slack webhook URL","yellow")+"?")
+	webhookURL=raw_input(">> ")
+
+	print("Under your slack app -> OAuth & Permissions page, what is your "+colorize("OAuth Access Token","yellow")+"?")
+	oauthToken=raw_input(">> ")
+
+	# Update notifier.yaml in conf directory
+	notifyYAML="""
+notifiers:
+  - name: Slack Bot
+    type: slack
+    uid: notifier1
+    # either
+    org_id: 1
+    # or
+    org_name: default
+    is_default: true
+    send_reminder: true
+    frequency: 1h
+    disable_resolve_message: false
+    # See `Supported Settings` section for settings supporter for each
+    # alert notification type.
+    settings:
+      recipient: "#alerts"
+      token: \""""+oauthToken+"""\"
+      uploadImage: true
+      url: """+webhookURL+"""
+"""
+	with open(os.path.abspath(pathname)+'/conf/notifier.yaml', 'w') as the_file:
+		the_file.write(notifyYAML)
+
+	os.system('sudo cp -f '+os.path.abspath(pathname)+'/conf/notifier.yaml /etc/grafana/provisioning/datasources/')
+	os.system('sudo systemctl restart grafana-server')
 import psycopg2
 from configparser import ConfigParser
-def getOrgs(apiKey):
-	print("Get orgs")
-
-def getStatus(orgId, apiKey):
-	print("Get Device Status's for "+str(orgId))
 
 # Code starts here
 os.system('clear')
@@ -229,6 +265,12 @@ print("Setting up the monitor. What we need to do is:\n\
 
 print("What is your "+colorize("dashboard API key","yellow")+"?")
 apiKey=raw_input(">> ")
+print("Do you wish to configure "+colorize("slack integration for alerts","yellow")+"?")
+slackAns=raw_input("(yes/no)>> ")
+if(slackAns=="yes"):
+	slackConfig = getSlack()
+
+
 with open(os.path.abspath(pathname)+'/api.key', 'w') as the_file:
 	the_file.write(apiKey)
 os.system('sudo chmod 0640 '+os.path.abspath(pathname)+'/api.key')
