@@ -38,6 +38,7 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['panels'][0]['targets'][0]['y'] = 6
 	dashboard['panels'][0]['targets'][0]['rawSql'] = "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online') AS metric,\n  numonline\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	dashboard['panels'][0]['targets'][0]['refId'] = "A"
+	dashboard['panels'][0]['targets'][0]['select'] = None
 
 	targetTmpB = {
 		"rawSql":"SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, \' Alerting\') AS metric,\n  numalerting\nFROM mnode_stats\nWHERE organization_name = \'"+orgName.strip()+"\'\nORDER BY 1,2",
