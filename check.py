@@ -33,6 +33,7 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['uid'] = str(orgId)
 	dashboard['time']['from']="now-1h"
 	del dashboard['panels'][0]['targets'][0]
+	dashboard['panels'][0]['targets'] = []
 	dashboard['panels'][0]['targets'][0]['h'] = 14
 	dashboard['panels'][0]['targets'][0]['w'] = 15
 	dashboard['panels'][0]['targets'][0]['x'] = 0
