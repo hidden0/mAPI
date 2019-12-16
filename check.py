@@ -130,25 +130,51 @@ def buildDashboards(orgName, orgId, totalDev):
 		slackInt = False
 
 	if(slackInt==True):
-		print ("Slack INIT!")
-		dashboard['panels'][0]['thresholds'][0]['value'] = 15
-		dashboard['panels'][0]['thresholds'][0]['op'] = "gt"
-		dashboard['panels'][0]['thresholds'][0]['fill'] = "true"
-		dashboard['panels'][0]['thresholds'][0]['line'] = "true"
-		dashboard['panels'][0]['thresholds'][0]['colorMode'] = "critical"
-
-		dashboard['panels'][0]['alert']['conditions'][0]["type"] = "query"
-		dashboard['panels'][0]['alert']['conditions'][0]["query"]["params"][0] = "A"
-		dashboard['panels'][0]['alert']['conditions'][0]["query"]["params"][1] = "15m"
-		dashboard['panels'][0]['alert']['conditions'][0]["query"]["params"][2] = "now"
-		dashboard['panels'][0]['alert']['conditions'][0]["reducer"]["type"]="percent_diff"
-		dashboard['panels'][0]['alert']['conditions'][0]["evaluator"]["type"]="gt"
-		dashboard['panels'][0]['alert']['conditions'][0]["evaluator"]["params"][0]=15
-		dashboard['panels'][0]['alert']['conditions'][0]["operator"]["type"]="and"
-		dashboard['panels'][0]['alert']['frequency']="1m"
-		dashboard['panels'][0]['alert']['handler']=1
-		dashboard['panels'][0]['alert']['name']="Online devices diff alert"
-		dashboard['panels'][0]['alert']['message']="A difference of 15% change was detected in online devices for the " + orgName + " monitor."
+		panelAlertJson= {
+			"alertRuleTags": {},
+			"conditions": [
+			{
+				"evaluator": {
+				"params": [
+					15
+				],
+				"type": "gt"
+				},
+				"operator": {
+				"type": "and"
+				},
+				"query": {
+				"params": [
+					"A",
+					"15m",
+					"now"
+					]
+				},
+				"reducer": {
+				"params": [],
+				"type": "percent_diff"
+				},
+				"type": "query"
+				}
+			],
+			"executionErrorState": "alerting",
+			"for": "15m",
+			"frequency": "1m",
+			"handler": 1,
+			"message": "A difference of 15% change has occurred to online devices in the "+orgName+" monitor.",
+			"name": "Online Diff Check",
+			"noDataState": "no_data",
+			"notifications": []
+		}
+		panelAlertThreshold=[
+			{
+			"colorMode": "critical",
+			"fill": true,
+			"line": true,
+			"op": "gt",
+			"value": 15
+			}
+		]
 
 		alertPanel = {
 			"dashboardFilter": "",
@@ -175,6 +201,8 @@ def buildDashboards(orgName, orgId, totalDev):
 			"transparent": true,
 			"type": "alertlist"
 			}
+		dashboard['panels'][0].append(panelAlertJson)
+		dashboard['panels'][0].append(panelAlertThreshold)
 		dashboard['panels'].append(alertPanel)
 
 	# Add Panels online/alerting/offline
