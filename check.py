@@ -32,20 +32,16 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['title'] = orgName + " Device Monitoring"
 	dashboard['uid'] = str(orgId)
 	dashboard['time']['from']="now-1h"
-	del dashboard['panels'][0]['targets'][0]
-	dashboard['panels'][0]['targets'] = []
-	dashboard['panels'][0]['targets'][0]['h'] = 14
-	dashboard['panels'][0]['targets'][0]['w'] = 15
-	dashboard['panels'][0]['targets'][0]['x'] = 0
-	dashboard['panels'][0]['targets'][0]['y'] = 6
-	dashboard['panels'][0]['targets'][0]['rawSql'] = "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online') AS metric,\n  numonline\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
-	dashboard['panels'][0]['targets'][0]['refId'] = "A"
 
 	targetTmpA = {
 	"refId": "A",
 	"format": "time_series",
 	"timeColumn": "time",
 	"metricColumn": "none",
+	"h": 14,
+	"w": 15,
+	"x": 0,
+	"y": 6,
 	"group": [],
 	"where": [
 		{
@@ -119,7 +115,7 @@ def buildDashboards(orgName, orgId, totalDev):
 	"rawQuery": "true",
 	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Offline') AS metric,\n  numoffline as \"Devices Offline\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
-	dashboard['panels'][0]['targets'].append(targetTmpA)
+	dashboard['panels'][0]['targets'][0]=targetTmpA
 	dashboard['panels'][0]['targets'].append(targetTmpB)
 	dashboard['panels'][0]['targets'].append(targetTmpC)
 	slackInt = False
