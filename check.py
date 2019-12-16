@@ -201,8 +201,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			"transparent": "true",
 			"type": "alertlist"
 			}
-		dashboard['panels'][0]['alert'] = {}
-		dashboard['panels'][0]['alert'].append(panelAlertJson)
+		dashboard['panels'][0]['alert'] = panelAlertJson
 		dashboard['panels'][0]['threshold'].append(panelAlertThreshold)
 		dashboard['panels'].append(alertPanel)
 
