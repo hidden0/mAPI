@@ -250,8 +250,10 @@ notifiers:
 	with open(os.path.abspath(pathname)+'/conf/notifier.yaml', 'w') as the_file:
 		the_file.write(notifyYAML)
 
-	os.system('sudo cp -f '+os.path.abspath(pathname)+'/conf/notifier.yaml /etc/grafana/provisioning/datasources/')
+	os.system('sudo cp -f '+os.path.abspath(pathname)+'/conf/notifier.yaml /etc/grafana/provisioning/notifiers/')
 	os.system('sudo systemctl restart grafana-server')
+	os.system('touch ./slack_setup_true')
+	
 import psycopg2
 from configparser import ConfigParser
 

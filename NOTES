@@ -57,3 +57,26 @@ This monitor will perform the following:
 
 	- Store device status in mnode_stats, and check again in 1 minute.
 """
+
+
+Slack App:
+
+- Create a slack account/workspace
+- Build an app:
+https://api.slack.com/apps?new_app=1
+- Need to answer a lot of questions for provisioning:
+	Name - Alert name
+	Type - Slack
+	Default (send on all alerts) - True/False
+	Include image - True/False
+	Disable Resolve Message - True/False
+	Send reminders - True/False
+	Slack settings - True/False
+	Url - incoming webhook URL
+		https://hooks.slack.com/services/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
+	Recipient - #alerts
+	Username - mapi_monitor
+	Icon emoji
+	Icon URL
+	Mention
+	Token
