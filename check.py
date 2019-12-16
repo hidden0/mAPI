@@ -201,8 +201,8 @@ def buildDashboards(orgName, orgId, totalDev):
 			"transparent": "true",
 			"type": "alertlist"
 			}
-		dashboard['panels'][0].append(panelAlertJson)
-		dashboard['panels'][0].append(panelAlertThreshold)
+		dashboard['panels'][0]['alert'].append(panelAlertJson)
+		dashboard['panels'][0]['threshold'].append(panelAlertThreshold)
 		dashboard['panels'].append(alertPanel)
 
 	# Add Panels online/alerting/offline
