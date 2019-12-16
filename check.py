@@ -7,7 +7,7 @@ import requests
 pathname = os.path.dirname(sys.argv[0])
 debug = None
 try:
-	debug = os.path.dirname(sys.argv[1])
+	debug = sys.argv[1]
 except:
 	debug = None
 
