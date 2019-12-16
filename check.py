@@ -5,6 +5,15 @@ import time
 import json
 import requests
 pathname = os.path.dirname(sys.argv[0])
+debug = None
+try:
+	debug = os.path.dirname(sys.argv[1])
+except:
+	debug = None
+
+if debug == True:
+	print ("DEBUG MODE TRUE")
+	exit()
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 import mnode
 
