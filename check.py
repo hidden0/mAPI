@@ -56,10 +56,9 @@ def buildDashboards(orgName, orgId, totalDev):
 		f = open("filename.txt")
 		# Do something with the file
 		slackint = True
+		f.close()
 	except IOError:
 		slackInt = False
-	finally:
-		f.close()
 
 	if(slackInt==True):
 		dashboard['panels'][0]['thresholds'][0]['value'] = 15
