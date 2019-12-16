@@ -202,7 +202,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			"type": "alertlist"
 			}
 		dashboard['panels'][0]['alert'] = panelAlertJson
-		dashboard['panels'][0]['threshold'].append(panelAlertThreshold)
+		dashboard['panels'][0]['threshold'] = panelAlertThreshold
 		dashboard['panels'].append(alertPanel)
 
 	# Add Panels online/alerting/offline
