@@ -169,8 +169,8 @@ def buildDashboards(orgName, orgId, totalDev):
 		panelAlertThreshold=[
 			{
 			"colorMode": "critical",
-			"fill": true,
-			"line": true,
+			"fill": "true",
+			"line": "true",
 			"op": "gt",
 			"value": 15
 			}
@@ -179,8 +179,8 @@ def buildDashboards(orgName, orgId, totalDev):
 		alertPanel = {
 			"dashboardFilter": "",
 			"dashboardTags": [],
-			"datasource": null,
-			"folderId": null,
+			"datasource": "null",
+			"folderId": "null",
 			"gridPos": {
 				"h": 8,
 				"w": 7,
@@ -190,15 +190,15 @@ def buildDashboards(orgName, orgId, totalDev):
 			"id": 16,
 			"limit": 10,
 			"nameFilter": "",
-			"onlyAlertsOnDashboard": true,
+			"onlyAlertsOnDashboard": "true",
 			"options": {},
 			"show": "changes",
 			"sortOrder": 1,
 			"stateFilter": [],
-			"timeFrom": null,
-			"timeShift": null,
+			"timeFrom": "null",
+			"timeShift": "null",
 			"title": "Recent Alerts",
-			"transparent": true,
+			"transparent": "true",
 			"type": "alertlist"
 			}
 		dashboard['panels'][0].append(panelAlertJson)
