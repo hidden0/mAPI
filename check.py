@@ -302,18 +302,34 @@ def buildDashboards(orgName, orgId, totalDev):
 	with open(os.path.abspath(pathname)+'/conf/dashboard_'+orgFileName+'.json', 'w') as outfile:
 		json.dump(dashboard, outfile)
 
-def fuzzNodeData(fakeNum, orgNum):
+def fuzzNodeData(fakeNum, orgNum, percOnline, percAlerting, percOffline):
 	deviceStatusArray = []
+
+	onlineTarget = int(round(fakeNum * percOnline))
+	oTargetCounter = 0
+	alertTarget = int(round(fakeNum * percAlerting))
+	aTargetCounter = 0
+	offlineTarget = int(round(fakeNum * percOffline))
+	offTargetCounter = 0
+
 	for x in range(fakeNum):
 		seed(time.time())
-		state = randint(0,2)
-		devState = "offline"
-		if state==0:
-			devState = "online"
-		elif state==1:
-			devState = "alerting"
-		elif state==2:
-			devState = "offline"
+		state = randint(0,100)
+		if oTargetCounter <= onlineTarget:
+			devState="online"
+			oTargetCounter+=1
+		elif aTargetCounter <= alertTarget:
+			devState="alerting"
+			aTargetCounter+=1
+		elif offTargetCounter <= offlineTarget:
+			devState="offline"
+			offTargetCounter+=1
+
+		# Randomize a few online devices to offline
+		if (state > 95):
+			# 5% chance to knock an online node down
+			devState="offline"
+
 		deviceStatusArray.append({
 				"name": "Fake Node "+str(randint(1000,9999))+" "+str(x),
 				"serial": "Q2XX-"+str(orgNum)+"-"+str(x),
@@ -362,14 +378,31 @@ for org in orgJson:
 		devStatus = json.loads(apiObj.sendGet(apiAction))
 	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
 	else:
+		# Outage simulator (~8% chance)
+		seed(time.time())
+		outageChance = randint(0.100)
+		orgHit = randint(1,4)
+
 		if mOrganization.organization_id==1:
-			devStatus=fuzzNodeData(100, 1)
+			if outageChance > 92 and orgHit==1:
+				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
+			else:
+				devStatus=fuzzNodeData(100, 1, 0.80, 0.12, 0.08)
 		elif mOrganization.organization_id==2:
-			devStatus=fuzzNodeData(200, 2)
+			if outageChance > 92 and orgHit==2:
+				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
+			else:
+				devStatus=fuzzNodeData(200, 1, 0.98, 0.0, 0.02)
 		elif mOrganization.organization_id==3:
-			devStatus=fuzzNodeData(300, 3)
+			if outageChance > 92 and orgHit==3:
+				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
+			else:
+				devStatus=fuzzNodeData(300, 1, 0.72, 0.2, 0.08)
 		elif mOrganization.organization_id==4:
-			devStatus=fuzzNodeData(500, 4)
+			if outageChance > 92 and orgHit==4:
+				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
+			else:
+				devStatus=fuzzNodeData(500, 1, 0.93, 0.02, 0.05)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
