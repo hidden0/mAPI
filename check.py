@@ -297,6 +297,7 @@ def fuzzNodeData(fakeNum):
 	deviceStatusArray = []
 	for x in range(fakeNum):
 		seed(int(time.time()))
+		time.sleep(0.01)
 		state = randint(0,2)
 		devState = "offline"
 		if state==0:
