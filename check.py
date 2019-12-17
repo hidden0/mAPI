@@ -296,8 +296,7 @@ def buildDashboards(orgName, orgId, totalDev):
 def fuzzNodeData(fakeNum):
 	deviceStatusArray = []
 	for x in range(fakeNum):
-		seed(int(time.time()))
-		time.sleep(0.04)
+		seed(time.time())
 		state = randint(0,2)
 		devState = "offline"
 		if state==0:
