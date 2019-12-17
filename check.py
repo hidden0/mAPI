@@ -357,6 +357,7 @@ for org in orgJson:
 		devStatus = json.loads(apiObj.sendGet(apiAction))
 	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
 	else:
+		print "Neat"
 		if mOrganization.organization_id==1:
 			devStatus=fuzzNodeData(1000)
 		elif mOrganization.organization_id==2:
