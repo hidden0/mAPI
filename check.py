@@ -326,22 +326,22 @@ orgJson=json.loads(apiObj.sendGet(apiAction))
 if demoMode==True:
 	orgJson = [
 		{
-			"id": "1",
+			"id": 1,
 			"name": "Demo Org 1",
 			"url": "https://dashboard.meraki.com/"
 		},
 		{
-			"id": "2",
+			"id": 2,
 			"name": "Demo Org 2",
 			"url": "https://dashboard.meraki.com/"
 		},
 		{
-			"id": "3",
+			"id": 3,
 			"name": "Demo Org 3",
 			"url": "https://dashboard.meraki.com/"
 		},
 		{
-			"id": "4",
+			"id": 4,
 			"name": "Demo Org 4",
 			"url": "https://dashboard.meraki.com/"
 		}
@@ -357,7 +357,6 @@ for org in orgJson:
 		devStatus = json.loads(apiObj.sendGet(apiAction))
 	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
 	else:
-		print "Neat"
 		if mOrganization.organization_id==1:
 			devStatus=fuzzNodeData(1000)
 		elif mOrganization.organization_id==2:
