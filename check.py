@@ -490,14 +490,15 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			numAlerting += 1
 
 	# Calculate rate of change
-	lastRecord = "SELECT numonline from mnode_stats WHERE org_id = '"+str(mOrganization.organization_id)"' ORDER BY id DESC LIMIT 1"
+	lastRecord = "SELECT numonline from mnode_stats WHERE org_id = '"+str(mOrganization.organization_id)+"' ORDER BY id DESC LIMIT 1"
 	lastRecordResult = dbObj.execSQL(lastRecord)
 	lastOnline = int(lastRecordResult[0][0])
 
 	print("Last online: " + str(lastOnline) + " Current online: " + str(numOnline))
 	print("(lastOnline - numOnline) > ("+str(lastOnline)+" - " +str(numOnline)+" > "+ str(lastOnline-numOnline))
 	print("(lastOnline + numOnline) > ("+str(lastOnline)+" + " +str(numOnline)+" > "+ str(lastOnline+numOnline))
-	percDiff = ((lastOnline - numOnline) / ((lastOnline + numOnline)/2)) * 100
+	percDiff = float(((lastOnline - numOnline) / ((lastOnline + numOnline)/2)) * 100)
+	print("Percent diff: " + str(percDiff))
 	sql="INSERT INTO mnode_stats (dateCreated, org_id, organization_name, numOnline, numAlerting, numOffline, percDiff) \
 	VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+mOrganization.organization_name+"', "+str(numOnline)+", "+str(numAlerting)+", "+str(numOffline)+", "+str(percDiff)+")"
 	result=dbObj.execSQL(sql)
