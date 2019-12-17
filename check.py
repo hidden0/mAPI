@@ -347,7 +347,7 @@ if demoMode==True:
 for org in orgJson:
 	mOrganization = mnode.mOrg(org["id"],org["name"].strip(),org["url"])
 	print("Pulling device status on " + str(mOrganization.organization_id))
-
+	devStatus = None
 	# org[] holds the following string:
 	# {u'url': u'https://n174.meraki.com/o/sXoAMa/manage/organization/overview', u'id': u'ORGID', u'name': u'NAME '}
 	apiAction = "organizations/"+str(mOrganization.organization_id)+"/deviceStatuses"
