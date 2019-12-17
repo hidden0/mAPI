@@ -302,7 +302,7 @@ def buildDashboards(orgName, orgId, totalDev):
 	with open(os.path.abspath(pathname)+'/conf/dashboard_'+orgFileName+'.json', 'w') as outfile:
 		json.dump(dashboard, outfile)
 
-def fuzzNodeData(fakeNum):
+def fuzzNodeData(fakeNum, orgNum):
 	deviceStatusArray = []
 	for x in range(fakeNum):
 		seed(time.time())
@@ -316,7 +316,7 @@ def fuzzNodeData(fakeNum):
 			devState = "offline"
 		deviceStatusArray.append({
 				"name": "Fake Node "+str(randint(1000,9999))+" "+str(x),
-				"serial": "Q2XX-"+str(randint(1000,9999))+"-"+str(x),
+				"serial": "Q2XX-"+str(orgNum)+"-"+str(x),
 				"mac": "00:11:22:33:44:55",
 				"status": devState,
 				"lanIp": "1.2.3.4",
@@ -363,13 +363,13 @@ for org in orgJson:
 	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
 	else:
 		if mOrganization.organization_id==1:
-			devStatus=fuzzNodeData(100)
+			devStatus=fuzzNodeData(100, 1)
 		elif mOrganization.organization_id==2:
-			devStatus=fuzzNodeData(200)
+			devStatus=fuzzNodeData(200, 2)
 		elif mOrganization.organization_id==3:
-			devStatus=fuzzNodeData(300)
+			devStatus=fuzzNodeData(300, 3)
 		elif mOrganization.organization_id==4:
-			devStatus=fuzzNodeData(500)
+			devStatus=fuzzNodeData(500, 4)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
