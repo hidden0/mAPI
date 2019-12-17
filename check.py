@@ -490,7 +490,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			numAlerting += 1
 
 	# Calculate rate of change
-	lastRecord = "SELECT * from mnode_stats ORDER BY id DESC LIMIT 1"
+	lastRecord = "SELECT numonline from mnode_stats ORDER BY id DESC LIMIT 1"
 	lastRecordResult = dbObj.execSQL(lastRecord)
 	lastOnline = int(lastRecordResult[0][0])
 
