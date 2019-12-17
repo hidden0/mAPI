@@ -146,9 +146,9 @@ def buildDashboards(orgName, orgId, totalDev):
 			{
 				"evaluator": {
 				"params": [
-					15
+					65
 				],
-				"type": "gt"
+				"type": "lt"
 				},
 				"operator": {
 				"type": "and"
@@ -162,7 +162,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				},
 				"reducer": {
 				"params": [],
-				"type": "percent_diff"
+				"type": "last"
 				},
 				"type": "query"
 				}
@@ -171,7 +171,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			"for": "15m",
 			"frequency": "1m",
 			"handler": 1,
-			"message": "A difference of 15% change has occurred to online devices in the "+orgName+" monitor.",
+			"message": orgName+" ",
 			"name": "Online Diff Check",
 			"noDataState": "no_data",
 			"notifications": []
@@ -489,9 +489,14 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 		else:
 			numAlerting += 1
 
+	# Calculate rate of change
+	lastRecord = "SELECT numOnline from mnode_stats ORDER BY id DESC LIMIT 1"
+	lastRecordResult = dbObj.execSQL(lastRecord)
+	lastOnline = int(lastRecordResult[0])
 
-	sql="INSERT INTO mnode_stats (dateCreated, org_id, organization_name, numOnline, numAlerting, numOffline) \
-	VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+mOrganization.organization_name+"', "+str(numOnline)+", "+str(numAlerting)+", "+str(numOffline)+")"
+	percDiff = ((lastOnline - numOnline) / ((lastOnline + numOnline)/2)) * 100
+	sql="INSERT INTO mnode_stats (dateCreated, org_id, organization_name, numOnline, numAlerting, numOffline, percDiff) \
+	VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+mOrganization.organization_name+"', "+str(numOnline)+", "+str(numAlerting)+", "+str(numOffline)+", "+str(percDiff)+")"
 	result=dbObj.execSQL(sql)
 
 

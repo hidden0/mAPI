@@ -297,7 +297,8 @@ mnode_row_id integer REFERENCES mnode(id),
 organization_name varchar(128),
 numOnline integer,
 numAlerting integer,
-numOffline integer
+numOffline integer,
+percDiff decimal
 );
 """
 sqlNode="""
