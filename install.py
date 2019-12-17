@@ -111,7 +111,7 @@ def yumSetup():
 
 	# Create a cronjob to execute ./check.py every 5 minutes.
 
-	cron="*/1 * * * * "+os.getcwd()+"/check.py >> /var/log/cron.log 2>&1\n"
+	cron="*/5 * * * * "+os.getcwd()+"/check.py >> /var/log/cron.log 2>&1\n"
 	with open(''+os.path.abspath(pathname)+'/mycron', 'w') as the_file:
 		the_file.write(cron)
 		the_file.close()
@@ -204,7 +204,7 @@ def aptSetup():
 
 	# Create a cronjob to execute ./check.py every 5 minutes.
 
-	cron="*/1 * * * * "+os.getcwd()+"/check.py >> /var/log/cron.log 2>&1\n"
+	cron="*/5 * * * * "+os.getcwd()+"/check.py >> /var/log/cron.log 2>&1\n"
 	with open(''+os.path.abspath(pathname)+'/mycron', 'w') as the_file:
 		the_file.write(cron)
 		the_file.close()
@@ -253,7 +253,7 @@ notifiers:
 	os.system('sudo cp -f '+os.path.abspath(pathname)+'/conf/notifier.yaml /etc/grafana/provisioning/notifiers/')
 	os.system('sudo systemctl restart grafana-server')
 	os.system('touch ./slack_setup_true')
-	
+
 import psycopg2
 from configparser import ConfigParser
 
