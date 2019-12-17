@@ -295,6 +295,7 @@ def buildDashboards(orgName, orgId, totalDev):
 
 def fuzzNodeData(fakeNum):
 	deviceStatusArray = []
+	print("Neat")
 	for x in range(fakeNum):
 		seed(int(time.time()))
 		state = randint(0,2)
