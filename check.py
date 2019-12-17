@@ -490,9 +490,9 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			numAlerting += 1
 
 	# Calculate rate of change
-	lastRecord = "SELECT numOnline from mnode_stats ORDER BY id DESC LIMIT 1"
+	lastRecord = "SELECT * from mnode_stats ORDER BY id DESC LIMIT 1"
 	lastRecordResult = dbObj.execSQL(lastRecord)
-	lastOnline = int(lastRecordResult[0])
+	lastOnline = int(lastRecordResult[0][0])
 
 	percDiff = ((lastOnline - numOnline) / ((lastOnline + numOnline)/2)) * 100
 	sql="INSERT INTO mnode_stats (dateCreated, org_id, organization_name, numOnline, numAlerting, numOffline, percDiff) \
