@@ -4,18 +4,17 @@ import os
 import time
 import json
 import requests
+from random import seed
+from random import randint
 pathname = os.path.dirname(sys.argv[0])
-debug = None
+demoMode = None
 try:
 	val = sys.argv[1]
-	if val == "debug":
-		debug = True
+	if val == "demo":
+		demoMode = True
 except:
-	debug = None
+	demoMode = False
 
-if debug == True:
-	print ("DEBUG MODE TRUE")
-	exit()
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 import mnode
 
@@ -294,10 +293,57 @@ def buildDashboards(orgName, orgId, totalDev):
 	with open(os.path.abspath(pathname)+'/conf/dashboard_'+orgFileName+'.json', 'w') as outfile:
 		json.dump(dashboard, outfile)
 
+def fuzzNodeData(fakeNum):
+	deviceStatusArray = []
+	for x in range(fakeNum):
+		seed(int(time.time()))
+		state = randint(0,2)
+		devState = "offline"
+		if state==0:
+			devState = "online"
+		elif state==1:
+			devState = "alerting"
+		elif state==2:
+			devState = "offline"
+		deviceStatusArray[x] = [
+			{
+				"name": "Fake Node "+str(x),
+				"serial": "Q2XX-XXXX-"+str(x),
+				"mac": "00:11:22:33:44:55",
+				"status": devState,
+				"lanIp": "1.2.3.4",
+				"publicIp": "123.123.123.1",
+				"networkId": "N_24329156"
+			}
+		]
+	return deviceStatusArray
 
 print("Pulling orgs...")
 orgJson=json.loads(apiObj.sendGet(apiAction))
-
+# If demo mode, build out 3 fake orgs:
+if demoMode==True:
+	orgJson = [
+		{
+			"id": "1",
+			"name": "Demo Org 1",
+			"url": "https://dashboard.meraki.com/"
+		},
+		{
+			"id": "2",
+			"name": "Demo Org 2",
+			"url": "https://dashboard.meraki.com/"
+		},
+		{
+			"id": "3",
+			"name": "Demo Org 3",
+			"url": "https://dashboard.meraki.com/"
+		},
+		{
+			"id": "4",
+			"name": "Demo Org 4",
+			"url": "https://dashboard.meraki.com/"
+		}
+	]
 for org in orgJson:
 	mOrganization = mnode.mOrg(org["id"],org["name"].strip(),org["url"])
 	print("Pulling device status on " + str(mOrganization.organization_id))
@@ -306,6 +352,16 @@ for org in orgJson:
 	# {u'url': u'https://n174.meraki.com/o/sXoAMa/manage/organization/overview', u'id': u'ORGID', u'name': u'NAME '}
 	apiAction = "organizations/"+str(mOrganization.organization_id)+"/deviceStatuses"
 	devStatus = json.loads(apiObj.sendGet(apiAction))
+	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
+	if demoMode==True:
+		if mOrganization.organization_id==1:
+			devStatus=fuzzNodeData(1000)
+		elif mOrganization.organization_id=2:
+			devStatus=fuzzNodeData(3000)
+		elif mOrganization.organization_id=3:
+			devStatus=fuzzNodeData(5000)
+		elif mOrganization.organization_id=4:
+			devStatus=fuzzNodeData(7000)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
