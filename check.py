@@ -356,11 +356,11 @@ for org in orgJson:
 	if demoMode==True:
 		if mOrganization.organization_id==1:
 			devStatus=fuzzNodeData(1000)
-		elif mOrganization.organization_id=2:
+		elif mOrganization.organization_id==2:
 			devStatus=fuzzNodeData(3000)
-		elif mOrganization.organization_id=3:
+		elif mOrganization.organization_id==3:
 			devStatus=fuzzNodeData(5000)
-		elif mOrganization.organization_id=4:
+		elif mOrganization.organization_id==4:
 			devStatus=fuzzNodeData(7000)
 	totalDevices = len(devStatus)
 	orgChange = False
