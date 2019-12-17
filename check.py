@@ -297,7 +297,7 @@ def fuzzNodeData(fakeNum):
 	deviceStatusArray = []
 	for x in range(fakeNum):
 		seed(int(time.time()))
-		time.sleep(0.1)
+		time.sleep(0.04)
 		state = randint(0,2)
 		devState = "offline"
 		if state==0:
@@ -357,11 +357,11 @@ for org in orgJson:
 		if mOrganization.organization_id==1:
 			devStatus=fuzzNodeData(100)
 		elif mOrganization.organization_id==2:
-			devStatus=fuzzNodeData(300)
+			devStatus=fuzzNodeData(200)
 		elif mOrganization.organization_id==3:
-			devStatus=fuzzNodeData(500)
+			devStatus=fuzzNodeData(300)
 		elif mOrganization.organization_id==4:
-			devStatus=fuzzNodeData(2000)
+			devStatus=fuzzNodeData(500)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
