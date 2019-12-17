@@ -364,7 +364,7 @@ for org in orgJson:
 		elif mOrganization.organization_id==4:
 			devStatus=fuzzNodeData(7000)
 	totalDevices = len(devStatus)
-	print(str(len(totalDevices)))
+	print(str(totalDevices))
 	exit()
 	orgChange = False
 	orgExists = False
