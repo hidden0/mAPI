@@ -295,7 +295,6 @@ def buildDashboards(orgName, orgId, totalDev):
 
 def fuzzNodeData(fakeNum):
 	deviceStatusArray = []
-	print("Neat")
 	for x in range(fakeNum):
 		seed(int(time.time()))
 		state = randint(0,2)
@@ -317,7 +316,6 @@ def fuzzNodeData(fakeNum):
 				"networkId": "N_24329156"
 			}
 		])
-		print deviceStatusArray[x]
 	return deviceStatusArray
 
 print("Pulling orgs...")
@@ -366,8 +364,6 @@ for org in orgJson:
 		elif mOrganization.organization_id==4:
 			devStatus=fuzzNodeData(7000)
 	totalDevices = len(devStatus)
-	print(str(totalDevices))
-	exit()
 	orgChange = False
 	orgExists = False
 	deviceChange = False
