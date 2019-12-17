@@ -355,13 +355,13 @@ for org in orgJson:
 	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
 	else:
 		if mOrganization.organization_id==1:
-			devStatus=fuzzNodeData(1000)
+			devStatus=fuzzNodeData(100)
 		elif mOrganization.organization_id==2:
-			devStatus=fuzzNodeData(3000)
+			devStatus=fuzzNodeData(300)
 		elif mOrganization.organization_id==3:
-			devStatus=fuzzNodeData(5000)
+			devStatus=fuzzNodeData(500)
 		elif mOrganization.organization_id==4:
-			devStatus=fuzzNodeData(7000)
+			devStatus=fuzzNodeData(2000)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
