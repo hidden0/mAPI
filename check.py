@@ -351,9 +351,10 @@ for org in orgJson:
 	# org[] holds the following string:
 	# {u'url': u'https://n174.meraki.com/o/sXoAMa/manage/organization/overview', u'id': u'ORGID', u'name': u'NAME '}
 	apiAction = "organizations/"+str(mOrganization.organization_id)+"/deviceStatuses"
-	devStatus = json.loads(apiObj.sendGet(apiAction))
+	if demoMode==False:
+		devStatus = json.loads(apiObj.sendGet(apiAction))
 	# If demo mode, replace dev Status with a new object (~2500-5000 devices per 4 orgs)
-	if demoMode==True:
+	else:
 		if mOrganization.organization_id==1:
 			devStatus=fuzzNodeData(1000)
 		elif mOrganization.organization_id==2:
