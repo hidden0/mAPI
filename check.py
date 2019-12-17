@@ -315,8 +315,8 @@ def fuzzNodeData(fakeNum):
 		elif state==2:
 			devState = "offline"
 		deviceStatusArray.append({
-				"name": "Fake Node "+str(x),
-				"serial": "Q2XX-XXXX-"+str(x),
+				"name": "Fake Node "+str(randint(1000,9999))+" "+str(x),
+				"serial": "Q2XX-"+str(randint(1000,9999))+"-"+str(x),
 				"mac": "00:11:22:33:44:55",
 				"status": devState,
 				"lanIp": "1.2.3.4",
