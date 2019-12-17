@@ -316,6 +316,7 @@ def fuzzNodeData(fakeNum):
 				"networkId": "N_24329156"
 			}
 		]
+		print deviceStatusArray[x]
 	return deviceStatusArray
 
 print("Pulling orgs...")
