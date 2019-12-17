@@ -252,9 +252,9 @@ def buildDashboards(orgName, orgId, totalDev):
 	tmpPanel['options']['fieldOptions']['defaults']['max'] = str(totalDev)
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][0]['value'] = 0
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][0]['color'] = "green"
-	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][1]['value'] = str(round(totalDev/2))
+	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][1]['value'] = str(round(totalDev*0.1))
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][1]['color'] = "orange"
-	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][2]['value'] = str(totalDev-(round(totalDev*0.1)))
+	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][2]['value'] = str(round(totalDev/2))
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][2]['color'] = "red"
 	tmpPanel['options']['fieldOptions']['defaults']['title']= ""
 	tmpPanel['targets'][0]['rawSql'] = "SELECT\n  datecreated AS \"time\",\n  organization_name AS metric,\n  numalerting\nFROM mnode_stats\nWHERE\n  organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
@@ -275,9 +275,9 @@ def buildDashboards(orgName, orgId, totalDev):
 	tmpPanel['options']['fieldOptions']['defaults']['max'] = str(totalDev)
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][0]['value'] = 0
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][0]['color'] = "green"
-	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][1]['value'] = str(round(totalDev/2))
+	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][1]['value'] = str(round(totalDev*0.1))
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][1]['color'] = "orange"
-	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][2]['value'] = str(totalDev-(round(totalDev*0.1)))
+	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][2]['value'] = str(round(totalDev/2))
 	tmpPanel['options']['fieldOptions']['defaults']['thresholds'][2]['color'] = "red"
 	tmpPanel['options']['fieldOptions']['defaults']['title']= ""
 	tmpPanel['targets'][0]['rawSql'] = "SELECT\n  datecreated AS \"time\",\n  organization_name AS metric,\n  numoffline\nFROM mnode_stats\nWHERE\n  organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
