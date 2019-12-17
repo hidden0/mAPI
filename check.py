@@ -306,7 +306,7 @@ def fuzzNodeData(fakeNum):
 			devState = "alerting"
 		elif state==2:
 			devState = "offline"
-		deviceStatusArray[x] = [
+		deviceStatusArray.append([
 			{
 				"name": "Fake Node "+str(x),
 				"serial": "Q2XX-XXXX-"+str(x),
@@ -316,7 +316,7 @@ def fuzzNodeData(fakeNum):
 				"publicIp": "123.123.123.1",
 				"networkId": "N_24329156"
 			}
-		]
+		])
 		print deviceStatusArray[x]
 	return deviceStatusArray
 
