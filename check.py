@@ -8,12 +8,19 @@ from random import seed
 from random import randint
 pathname = os.path.dirname(sys.argv[0])
 demoMode = None
+forceOutage = False
 try:
 	val = sys.argv[1]
 	if val == "demo":
 		demoMode = True
 except:
 	demoMode = False
+try:
+	val = sys.argv[2]
+	if val == "outage"
+		forceOutage = True
+except:
+	forceOutage = False
 
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 import mnode
@@ -411,7 +418,8 @@ for org in orgJson:
 		seed(time.time())
 		outageChance = randint(0,100)
 		orgHit = randint(1,4)
-
+		if forceOutage==True:
+			outageChance=100
 		if mOrganization.organization_id==1:
 			if outageChance > 92 and orgHit==1:
 				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
