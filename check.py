@@ -125,9 +125,38 @@ def buildDashboards(orgName, orgId, totalDev):
 	"rawQuery": "true",
 	"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Offline') AS metric,\n  numoffline as \"Devices Offline\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2"
 	}
+
+	targetTmpD= {
+		"refId": "D",
+		"format": "time_series",
+		"timeColumn": "time",
+		"metricColumn": "none",
+		"group": [],
+		"where": [
+			{
+				"type": "macro",
+				"name": "$__timeFilter",
+				"params": []
+			}
+		],
+		"select": [
+			[
+				{
+					"type": "column",
+					"params": [
+						"value"
+					]
+				}
+			]
+		],
+		"rawQuery": true,
+		"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online Change') AS metric,\n  percdiff as \"Online Device Change\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2",
+		"hide": true
+	}
 	dashboard['panels'][0]['targets'][0]=targetTmpA
 	dashboard['panels'][0]['targets'].append(targetTmpB)
 	dashboard['panels'][0]['targets'].append(targetTmpC)
+	dashboard['panels'][0]['targets'].append(targetTmpD)
 	slackInt = False
 
 	# Check for a file existing
@@ -146,7 +175,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			{
 				"evaluator": {
 				"params": [
-					65
+					15
 				],
 				"type": "lt"
 				},
@@ -155,7 +184,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				},
 				"query": {
 				"params": [
-					"A",
+					"D",
 					"15m",
 					"now"
 					]
@@ -171,7 +200,7 @@ def buildDashboards(orgName, orgId, totalDev):
 			"for": "15m",
 			"frequency": "1m",
 			"handler": 1,
-			"message": orgName+" ",
+			"message": orgName+" observed a change in online devices >15%!",
 			"name": "Online Diff Check",
 			"noDataState": "no_data",
 			"notifications": []
