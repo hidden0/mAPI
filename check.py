@@ -177,7 +177,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				"params": [
 					15
 				],
-				"type": "lt"
+				"type": "gt"
 				},
 				"operator": {
 				"type": "and"
