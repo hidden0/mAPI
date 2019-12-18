@@ -378,6 +378,15 @@ def fuzzNodeData(fakeNum, orgNum, percOnline, percAlerting, percOffline):
 	return deviceStatusArray
 
 print("Pulling orgs...")
+# Check for rebuild of dashboards
+rebuild=False
+try:
+	f = open("./rebuild")
+	# Do something with the file
+	rebuild = True
+	f.close()
+except IOError:
+	rebuild = False
 orgJson=json.loads(apiObj.sendGet(apiAction))
 # If demo mode, build out 3 fake orgs:
 if demoMode==True:
@@ -548,7 +557,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 	numOnline=0
 	numOffline=0
 	# If orgChange = True, rebuild the dashboard.json files in conf/
-	if orgChange == True or orgExists == False:
+	if orgChange == True or orgExists == False or rebuild == True:
 		print("BUILDING GRAFANA")
 		buildDashboards(mOrganization.organization_name,mOrganization.organization_id, totalDevices)
 		# Put the json files in /var/lib
