@@ -185,7 +185,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				"query": {
 				"params": [
 					"D",
-					"15m",
+					"5m",
 					"now"
 					]
 				},
@@ -197,7 +197,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				}
 			],
 			"executionErrorState": "alerting",
-			"for": "15m",
+			"for": "5m",
 			"frequency": "1m",
 			"handler": 1,
 			"message": orgName+" observed a change in online devices >15%!",
