@@ -25,7 +25,21 @@ except:
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 import mnode
 
+colors = {
+	'blue': '\033[94m',
+	'pink': '\033[95m',
+	'green': '\033[92m',
+	'yellow': '\033[93m',
+	'white': '\033[37m'
+	}
 
+# Defining functions before menus (menus make reference to function calls)
+
+# Allow colors array to emphasize instructions in terminal
+def colorize(string, color):
+	if not color in colors: return string
+	return colors[color] + string + '\033[0m'
+	
 # API key read:
 f=open(os.path.abspath(pathname)+"/api.key", "r")
 apikey=f.read().strip()
