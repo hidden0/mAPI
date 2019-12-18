@@ -398,7 +398,7 @@ if demoMode==True:
 	]
 for org in orgJson:
 	mOrganization = mnode.mOrg(org["id"],org["name"].strip(),org["url"])
-	print("Pulling device status on " + str(mOrganization.organization_id))
+	#print("Pulling device status on " + str(mOrganization.organization_id))
 	devStatus = []
 	# org[] holds the following string:
 	# {u'url': u'https://n174.meraki.com/o/sXoAMa/manage/organization/overview', u'id': u'ORGID', u'name': u'NAME '}
@@ -492,7 +492,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 				break
 		# If no - add it, if yes:
 		if deviceFound == False:
-			print("Dev not found "+device["serial"])
+			#print("Dev not found "+device["serial"])
 			# https://n174.meraki.com/o/sXoAMa/manage/organization/overview#t=device&q=Q2HP-Q2CM-K3F7
 			orgUrl = mOrganization.organization_url
 			deviceUrl = "<a href="+orgUrl+"#t=device&q=" + device["serial"]+" target=\"_blank\">"+device["serial"]+"</a>"
@@ -504,13 +504,13 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			#print(str(time.time())+", "+str(mOrganization.organization_id)+", '"+device["mac"]+"', '"+devName+"', 'unknown', '"+device["serial"]+"', '"+device["networkId"]+"', '"+deviceUrl+"', '"+device["status"]+"'")
 			sqlDevAdd = "INSERT INTO mnode (dateCreated, org_id, macAddr, deviceName, deviceModel, deviceSerial, deviceNetwork, deviceUrl, devStatus) VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+device["mac"]+"', '"+devName+"', 'unknown', '"+device["serial"]+"', '"+device["networkId"]+"', '"+deviceUrl+"', '"+device["status"]+"')"
 			result=dbObj.execSQL(sqlDevAdd)
-			print(result)
+			#print(result)
             # Check if the details are still the same (dev name, link, etc)
 
         # Any changes above should result in deviceChange = True
         # If deviceChange = True, update the database
 
-		print("Org ID: " + str(mOrganization.organization_id) + " Device status - " + device["status"])
+		#print("Org ID: " + str(mOrganization.organization_id) + " Device status - " + device["status"])
 		if("online" in device["status"].lower()):
 			numOnline += 1
 		elif("offline" in device["status"].lower()):
