@@ -494,11 +494,13 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 	lastRecordResult = dbObj.execSQL(lastRecord)
 	lastOnline = int(lastRecordResult[0][0])
 
-	print("Last online: " + str(lastOnline) + " Current online: " + str(numOnline))
-	print("(lastOnline - numOnline) > ("+str(lastOnline)+" - " +str(numOnline)+" > "+ str(lastOnline-numOnline))
-	print("(lastOnline + numOnline) > ("+str(lastOnline)+" + " +str(numOnline)+" > "+ str(lastOnline+numOnline))
+	#print("Last online: " + str(lastOnline) + " Current online: " + str(numOnline))
+	#print("(lastOnline - numOnline) > ("+str(lastOnline)+" - " +str(numOnline)+" > "+ str(lastOnline-numOnline))
+	#print("(lastOnline + numOnline) > ("+str(lastOnline)+" + " +str(numOnline)+" > "+ str(lastOnline+numOnline))
 	percDiff = float(((lastOnline - numOnline) / ((lastOnline + numOnline)/2.00)) * 100.00)
-	print("Percent diff: " + str(percDiff))
+	if(percDiff<0.00):
+		percDiff = percDiff*(-1.00)
+	#print("Percent diff: " + str(percDiff))
 	sql="INSERT INTO mnode_stats (dateCreated, org_id, organization_name, numOnline, numAlerting, numOffline, percDiff) \
 	VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+mOrganization.organization_name+"', "+str(numOnline)+", "+str(numAlerting)+", "+str(numOffline)+", "+str(percDiff)+")"
 	result=dbObj.execSQL(sql)
