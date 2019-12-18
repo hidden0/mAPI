@@ -385,6 +385,7 @@ try:
 	# Do something with the file
 	rebuild = True
 	f.close()
+	os.system("rm -f ./rebuild")
 except IOError:
 	rebuild = False
 orgJson=json.loads(apiObj.sendGet(apiAction))
