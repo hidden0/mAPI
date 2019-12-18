@@ -17,7 +17,7 @@ except:
 	demoMode = False
 try:
 	val = sys.argv[2]
-	if val == "outage"
+	if val == "outage":
 		forceOutage = True
 except:
 	forceOutage = False
