@@ -149,9 +149,9 @@ def buildDashboards(orgName, orgId, totalDev):
 				}
 			]
 		],
-		"rawQuery": true,
+		"rawQuery": "true",
 		"rawSql": "SELECT\n  datecreated AS \"time\",\n  CONCAT(organization_name, ' Online Change') AS metric,\n  percdiff as \"Online Device Change\"\nFROM mnode_stats\nWHERE organization_name = '"+orgName.strip()+"'\nORDER BY 1,2",
-		"hide": true
+		"hide": "true"
 	}
 	dashboard['panels'][0]['targets'][0]=targetTmpA
 	dashboard['panels'][0]['targets'].append(targetTmpB)
