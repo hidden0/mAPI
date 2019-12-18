@@ -414,21 +414,25 @@ for org in orgJson:
 
 		if mOrganization.organization_id==1:
 			if outageChance > 92 and orgHit==1:
+				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
 			else:
 				devStatus=fuzzNodeData(100, 1, 0.80, 0.12, 0.08)
 		elif mOrganization.organization_id==2:
 			if outageChance > 92 and orgHit==2:
+				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(200, 2, 0.0, 0.3, 0.7)
 			else:
 				devStatus=fuzzNodeData(200, 2, 0.98, 0.0, 0.02)
 		elif mOrganization.organization_id==3:
 			if outageChance > 92 and orgHit==3:
+				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(300, 3, 0.0, 0.3, 0.7)
 			else:
 				devStatus=fuzzNodeData(300, 3, 0.72, 0.2, 0.08)
 		elif mOrganization.organization_id==4:
 			if outageChance > 92 and orgHit==4:
+				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(500, 4, 0.0, 0.3, 0.7)
 			else:
 				devStatus=fuzzNodeData(500, 4, 0.93, 0.02, 0.05)
