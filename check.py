@@ -157,6 +157,13 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['panels'][0]['targets'].append(targetTmpB)
 	dashboard['panels'][0]['targets'].append(targetTmpC)
 	dashboard['panels'][0]['targets'].append(targetTmpD)
+	dashboard['panels'][0]['stack']="true"
+	dashboard['panels'][0]['fill']=10
+	dashboard['panels'][0]['aliasColors'] = {
+		orgName+" Online": "green",
+		orgName+" Alerting": "orange",
+		orgName+" Offline": "red"
+	}
 	slackInt = False
 
 	# Check for a file existing
