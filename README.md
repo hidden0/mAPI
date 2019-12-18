@@ -11,9 +11,17 @@ git clone https://github.com/hidden0/mAPI.git
 cd mAPI && ./setup.sh
 ```
 
+
 The above will install grafana, postgresql, and python. Finally a cronjob will run every minute to continually update the grafana visualization.
 
 Once the installation is complete, navigate to ```localhost``` in your browser to see the results.
+
+# Optional
+Slack integration is entirely optional but available. The requirements are as follows:
+1. Create a slack workspace - https://slack.com/create
+2. Create a slack app to generate a webhook and oauth token - https://api.slack.com/apps?new_app=1
+3. Type "yes" when prompted to enable slack integration, and provide the aforementioned details from your new app.
+
 
 # Requirements
 You will need some experience with linux, bash, and python to comfortably navigate any errors you may encounter during setup.
