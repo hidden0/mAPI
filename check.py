@@ -521,8 +521,11 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 	# Calculate rate of change
 	lastRecord = "SELECT numonline from mnode_stats WHERE org_id = '"+str(mOrganization.organization_id)+"' ORDER BY id DESC LIMIT 1"
 	lastRecordResult = dbObj.execSQL(lastRecord)
-	lastOnline = int(lastRecordResult[0][0])
-
+	lastOnline = 0
+	try:
+		lastOnline = int(lastRecordResult[0][0])
+	except:
+		lastOnline = 0
 	#print("Last online: " + str(lastOnline) + " Current online: " + str(numOnline))
 	#print("(lastOnline - numOnline) > ("+str(lastOnline)+" - " +str(numOnline)+" > "+ str(lastOnline-numOnline))
 	#print("(lastOnline + numOnline) > ("+str(lastOnline)+" + " +str(numOnline)+" > "+ str(lastOnline+numOnline))
