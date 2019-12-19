@@ -162,7 +162,8 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['panels'][0]['aliasColors'] = {
 		orgName+" Online": "green",
 		orgName+" Alerting": "orange",
-		orgName+" Offline": "red"
+		orgName+" Offline": "red",
+		orgName+" Online Change": "purple"
 	}
 	slackInt = False
 
