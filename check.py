@@ -8,7 +8,7 @@ from random import seed
 from random import randint
 pathname = os.path.dirname(sys.argv[0])
 demoMode = None
-outageMode = False
+outageMode = None
 try:
 	val = sys.argv[1]
 	if val == "demo":
@@ -463,7 +463,7 @@ for org in orgJson:
 		outageChance = randint(0,100)
 		if outageMode==True:
 			outageChance=100
-		orgHit = randint(1,4)
+		orgHit = randint(1,5)
 		onlineVariant = randint(80,100)
 		alertVariant = randint(0, (100 - onlineVariant))
 		offlineVariant = 100 - onlineVariant - alertVariant
