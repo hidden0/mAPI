@@ -559,7 +559,17 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			result=dbObj.execSQL(sqlDevAdd)
 			#print(result)
         # Check if the details are still the same (dev name, link, etc)
-
+		else:
+			sqlDevUpdate = "UPDATE mnode SET \
+			dateCreated = "+str(time.time())+", \
+			org_id = '"+str(mOrganization.organization_id)+"', \
+			macAddr = '"+device['mac']+"', \
+			deviceName = '"+devName+"', \
+			deviceModel = 'unknown', \
+			deviceSerial = '"+device['serial']+"', \
+			deviceNetwork = '"+device['networkId']+"', \
+			deviceUrl = '"+deviceUrl+"', \
+			devStatus = '"+device['status']+"'"
         # Any changes above should result in deviceChange = True
         # If deviceChange = True, update the database
 
