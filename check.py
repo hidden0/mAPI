@@ -388,7 +388,7 @@ try:
 	os.system("rm -f ./rebuild")
 except IOError:
 	rebuild = False
-orgJson=json.loads(apiObj.sendGet(apiAction))
+orgJson=None
 # If demo mode, build out 3 fake orgs:
 if demoMode==True:
 	orgJson = [
@@ -413,6 +413,9 @@ if demoMode==True:
 			"url": "https://dashboard.meraki.com/"
 		}
 	]
+else:
+	orgJson=json.loads(apiObj.sendGet(apiAction))
+
 for org in orgJson:
 	mOrganization = mnode.mOrg(org["id"],org["name"].strip(),org["url"])
 	print("Pulling device status on " + str(mOrganization.organization_id))
@@ -437,7 +440,7 @@ for org in orgJson:
 		onlineVariant = onlineVariant / 100.00
 		alertVariant = alertVariant / 100.00
 		offlineVariant = offlineVariant / 100.00
-		
+
 		if mOrganization.organization_id==1:
 			if outageChance > 92 and orgHit==1:
 				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
