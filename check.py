@@ -431,7 +431,7 @@ for org in orgJson:
 		seed(time.time())
 		outageChance = randint(0,100)
 		orgHit = randint(1,4)
-		onlineVariant = randint(88,100)
+		onlineVariant = randint(80,100)
 		alertVariant = randint(0, (100 - onlineVariant))
 		offlineVariant = 100 - onlineVariant - alertVariant
 		if(offlineVariant>0):
