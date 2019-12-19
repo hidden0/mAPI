@@ -560,6 +560,11 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			#print(result)
         # Check if the details are still the same (dev name, link, etc)
 		else:
+			devName = device["name"]
+
+			if isinstance(devName, type(None))==True:
+				devName="(No Name)"
+			devName = devName.replace("'","")
 			sqlDevUpdate = "UPDATE mnode SET \
 			dateCreated = "+str(time.time())+", \
 			org_id = '"+str(mOrganization.organization_id)+"', \
