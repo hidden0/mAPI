@@ -580,6 +580,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 		else:
 			devName = device["name"]
 			deviceUrl = "<a href="+orgUrl+"#t=device&q=" + device["serial"]+" target=\"_blank\">"+device["serial"]+"</a>"
+			orgUrl = mOrganization.organization_url
 			if isinstance(devName, type(None))==True:
 				devName="(No Name)"
 			devName = devName.replace("'","")
