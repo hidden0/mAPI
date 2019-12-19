@@ -539,7 +539,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
         # Any changes above should result in deviceChange = True
         # If deviceChange = True, update the database
 
-		print("Org ID: " + str(mOrganization.organization_id) + " Device status - " + device["status"])
+		#print("Org ID: " + str(mOrganization.organization_id) + " Device status - " + device["status"])
 		if("online" in device["status"].lower()):
 			numOnline += 1
 		elif("offline" in device["status"].lower()):
