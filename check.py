@@ -8,12 +8,19 @@ from random import seed
 from random import randint
 pathname = os.path.dirname(sys.argv[0])
 demoMode = None
+outageMode = False
 try:
 	val = sys.argv[1]
 	if val == "demo":
 		demoMode = True
 except:
 	demoMode = False
+try:
+	val = sys.argv[2]
+	if val == "outage":
+		outageMode = True
+except:
+	outageMode = False
 
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 import mnode
@@ -209,7 +216,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				}
 			],
 			"executionErrorState": "alerting",
-			"for": "1m",
+			"for": "5m",
 			"frequency": "1m",
 			"handler": 1,
 			"message": orgName+" observed a change in online devices >15%!",
@@ -440,6 +447,8 @@ for org in orgJson:
 		# Outage simulator (~8% chance)
 		seed(time.time())
 		outageChance = randint(0,100)
+		if outageMode==True:
+			outageChance=100
 		orgHit = randint(1,4)
 		onlineVariant = randint(80,100)
 		alertVariant = randint(0, (100 - onlineVariant))
@@ -549,7 +558,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			sqlDevAdd = "INSERT INTO mnode (dateCreated, org_id, macAddr, deviceName, deviceModel, deviceSerial, deviceNetwork, deviceUrl, devStatus) VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+device["mac"]+"', '"+devName+"', 'unknown', '"+device["serial"]+"', '"+device["networkId"]+"', '"+deviceUrl+"', '"+device["status"]+"')"
 			result=dbObj.execSQL(sqlDevAdd)
 			#print(result)
-            # Check if the details are still the same (dev name, link, etc)
+        # Check if the details are still the same (dev name, link, etc)
 
         # Any changes above should result in deviceChange = True
         # If deviceChange = True, update the database
