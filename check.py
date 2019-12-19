@@ -411,6 +411,11 @@ if demoMode==True:
 			"id": 4,
 			"name": "Demo Org 4",
 			"url": "https://dashboard.meraki.com/"
+		},
+		{
+			"id": 5,
+			"name": "Demo Org 5 - Large",
+			"url": "https://dashboard.meraki.com/"
 		}
 	]
 else:
@@ -461,6 +466,11 @@ for org in orgJson:
 				devStatus=fuzzNodeData(500, 4, 0.0, 0.3, 0.7)
 			else:
 				devStatus=fuzzNodeData(500, 4, onlineVariant, alertVariant, offlineVariant)
+		elif mOrganization.organization_id==5:
+			if outageChance > 92 and orgHit==5:
+				devStatus=fuzzNodeData(2000, 5, 0.0, 0.3, 0.7)
+			else:
+				devStatus=fuzzNodeData(2000, 5, onlineVariant, alertVariant, offlineVariant)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
