@@ -4,6 +4,7 @@ import os
 import time
 import platform
 import subprocess
+import getpass
 pathname = os.path.dirname(sys.argv[0])
 print(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
@@ -277,7 +278,7 @@ with open(os.path.abspath(pathname)+'/api.key', 'w') as the_file:
 	the_file.write(apiKey)
 os.system('sudo chmod 0640 '+os.path.abspath(pathname)+'/api.key')
 print("Please set a password to use for "+colorize("Grafana admin user and PostgreSQL user","yellow")+":")
-newPw=raw_input(">> ")
+newPw=getpass.getpass()
 
 if(packman=="yum"):
 	yumSetup()

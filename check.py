@@ -8,7 +8,7 @@ from random import seed
 from random import randint
 pathname = os.path.dirname(sys.argv[0])
 demoMode = None
-forceOutage = False
+outageMode = False
 try:
 	val = sys.argv[1]
 	if val == "demo":
@@ -18,9 +18,9 @@ except:
 try:
 	val = sys.argv[2]
 	if val == "outage":
-		forceOutage = True
+		outageMode = True
 except:
-	forceOutage = False
+	outageMode = False
 
 sys.path.append(os.path.abspath(os.path.abspath(pathname)+'/lib'))
 import mnode
@@ -39,7 +39,7 @@ colors = {
 def colorize(string, color):
 	if not color in colors: return string
 	return colors[color] + string + '\033[0m'
-	
+
 # API key read:
 f=open(os.path.abspath(pathname)+"/api.key", "r")
 apikey=f.read().strip()
@@ -178,6 +178,18 @@ def buildDashboards(orgName, orgId, totalDev):
 	dashboard['panels'][0]['targets'].append(targetTmpB)
 	dashboard['panels'][0]['targets'].append(targetTmpC)
 	dashboard['panels'][0]['targets'].append(targetTmpD)
+	dashboard['panels'][0]['stack']="true"
+	dashboard['panels'][0]['fill']=10
+	dashboard['panels'][0]['aliasColors'] = {
+		orgName+" Online": "green",
+		orgName+" Alerting": "orange",
+		orgName+" Offline": "red",
+		orgName+" Online Change": "purple"
+	}
+
+	# Scale adjustment for large orgs
+	if totalDev > 1000:
+		dashboard['panels'][0]['yaxes'][0]['logBase']=2
 	slackInt = False
 
 	# Check for a file existing
@@ -392,7 +404,17 @@ def fuzzNodeData(fakeNum, orgNum, percOnline, percAlerting, percOffline):
 	return deviceStatusArray
 
 print("Pulling orgs...")
-orgJson=json.loads(apiObj.sendGet(apiAction))
+# Check for rebuild of dashboards
+rebuild=False
+try:
+	f = open("./rebuild")
+	# Do something with the file
+	rebuild = True
+	f.close()
+	os.system("rm -f ./rebuild")
+except IOError:
+	rebuild = False
+orgJson=None
 # If demo mode, build out 3 fake orgs:
 if demoMode==True:
 	orgJson = [
@@ -415,8 +437,16 @@ if demoMode==True:
 			"id": 4,
 			"name": "Demo Org 4",
 			"url": "https://dashboard.meraki.com/"
+		},
+		{
+			"id": 5,
+			"name": "Demo Org 5 - Large",
+			"url": "https://dashboard.meraki.com/"
 		}
 	]
+else:
+	orgJson=json.loads(apiObj.sendGet(apiAction))
+
 for org in orgJson:
 	mOrganization = mnode.mOrg(org["id"],org["name"].strip(),org["url"])
 	#print("Pulling device status on " + str(mOrganization.organization_id))
@@ -431,33 +461,48 @@ for org in orgJson:
 		# Outage simulator (~8% chance)
 		seed(time.time())
 		outageChance = randint(0,100)
-		orgHit = randint(1,4)
-		if forceOutage==True:
+		if outageMode==True:
 			outageChance=100
+		orgHit = randint(1,4)
+		onlineVariant = randint(80,100)
+		alertVariant = randint(0, (100 - onlineVariant))
+		offlineVariant = 100 - onlineVariant - alertVariant
+		if(offlineVariant>0):
+			offlineVariant = randint(0, 100 - onlineVariant - alertVariant)
+
+		onlineVariant = onlineVariant / 100.00
+		alertVariant = alertVariant / 100.00
+		offlineVariant = offlineVariant / 100.00
+
 		if mOrganization.organization_id==1:
 			if outageChance > 92 and orgHit==1:
 				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(100, 1, 0.80, 0.12, 0.08)
+				devStatus=fuzzNodeData(100, 1, onlineVariant, alertVariant, offlineVariant)
 		elif mOrganization.organization_id==2:
 			if outageChance > 92 and orgHit==2:
 				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(200, 2, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(200, 2, 0.98, 0.0, 0.02)
+				devStatus=fuzzNodeData(200, 2, onlineVariant, alertVariant, offlineVariant)
 		elif mOrganization.organization_id==3:
 			if outageChance > 92 and orgHit==3:
 				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(300, 3, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(300, 3, 0.72, 0.2, 0.08)
+				devStatus=fuzzNodeData(300, 3, onlineVariant, alertVariant, offlineVariant)
 		elif mOrganization.organization_id==4:
 			if outageChance > 92 and orgHit==4:
 				print(colorize(mOrganization.organization_name + " simulated outage ","red")+ colorize(str(time.time()),"yellow"))
 				devStatus=fuzzNodeData(500, 4, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(500, 4, 0.93, 0.02, 0.05)
+				devStatus=fuzzNodeData(500, 4, onlineVariant, alertVariant, offlineVariant)
+		elif mOrganization.organization_id==5:
+			if outageChance > 92 and orgHit==5:
+				devStatus=fuzzNodeData(2000, 5, 0.0, 0.3, 0.7)
+			else:
+				devStatus=fuzzNodeData(2000, 5, onlineVariant, alertVariant, offlineVariant)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
@@ -531,8 +576,23 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 			sqlDevAdd = "INSERT INTO mnode (dateCreated, org_id, macAddr, deviceName, deviceModel, deviceSerial, deviceNetwork, deviceUrl, devStatus) VALUES ("+str(time.time())+", '"+str(mOrganization.organization_id)+"', '"+device["mac"]+"', '"+devName+"', 'unknown', '"+device["serial"]+"', '"+device["networkId"]+"', '"+deviceUrl+"', '"+device["status"]+"')"
 			result=dbObj.execSQL(sqlDevAdd)
 			#print(result)
-            # Check if the details are still the same (dev name, link, etc)
-
+        # Check if the details are still the same (dev name, link, etc)
+		else:
+			devName = device["name"]
+			deviceUrl = "<a href="+orgUrl+"#t=device&q=" + device["serial"]+" target=\"_blank\">"+device["serial"]+"</a>"
+			if isinstance(devName, type(None))==True:
+				devName="(No Name)"
+			devName = devName.replace("'","")
+			sqlDevUpdate = "UPDATE mnode SET \
+			dateCreated = "+str(time.time())+", \
+			org_id = '"+str(mOrganization.organization_id)+"', \
+			macAddr = '"+device['mac']+"', \
+			deviceName = '"+devName+"', \
+			deviceModel = 'unknown', \
+			deviceSerial = '"+device['serial']+"', \
+			deviceNetwork = '"+device['networkId']+"', \
+			deviceUrl = '"+deviceUrl+"', \
+			devStatus = '"+device['status']+"'"
         # Any changes above should result in deviceChange = True
         # If deviceChange = True, update the database
 
@@ -547,8 +607,11 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 	# Calculate rate of change
 	lastRecord = "SELECT numonline from mnode_stats WHERE org_id = '"+str(mOrganization.organization_id)+"' ORDER BY id DESC LIMIT 1"
 	lastRecordResult = dbObj.execSQL(lastRecord)
-	lastOnline = int(lastRecordResult[0][0])
-
+	lastOnline = 0
+	try:
+		lastOnline = int(lastRecordResult[0][0])
+	except:
+		lastOnline = 0
 	#print("Last online: " + str(lastOnline) + " Current online: " + str(numOnline))
 	#print("(lastOnline - numOnline) > ("+str(lastOnline)+" - " +str(numOnline)+" > "+ str(lastOnline-numOnline))
 	#print("(lastOnline + numOnline) > ("+str(lastOnline)+" + " +str(numOnline)+" > "+ str(lastOnline+numOnline))
@@ -564,7 +627,7 @@ VALUES ("+str(time.time())+", "+str(mOrganization.organization_id)+", '"+mOrgani
 	numOnline=0
 	numOffline=0
 	# If orgChange = True, rebuild the dashboard.json files in conf/
-	if orgChange == True or orgExists == False:
+	if orgChange == True or orgExists == False or rebuild == True:
 		print("BUILDING GRAFANA")
 		buildDashboards(mOrganization.organization_name,mOrganization.organization_id, totalDevices)
 		# Put the json files in /var/lib
