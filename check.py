@@ -205,7 +205,7 @@ def buildDashboards(orgName, orgId, totalDev):
 				}
 			],
 			"executionErrorState": "alerting",
-			"for": "5m",
+			"for": "1m",
 			"frequency": "1m",
 			"handler": 1,
 			"message": orgName+" observed a change in online devices >15%!",
