@@ -428,27 +428,36 @@ for org in orgJson:
 		seed(time.time())
 		outageChance = randint(0,100)
 		orgHit = randint(1,4)
+		onlineVariant = randint(88,100)
+		alertVariant = randint(0, (100 - onlineVariant))
+		offlineVariant = 100 - onlineVariant - alertVariant
+		if(offlineVariant>0):
+			offlineVariant = randint(0, 100 - onlineVariant - alertVariant)
 
+		onlineVariant = onlineVariant / 100.00
+		alertVariant = alertVariant / 100.00
+		offlineVariant = offlineVariant / 100.00
+		
 		if mOrganization.organization_id==1:
 			if outageChance > 92 and orgHit==1:
 				devStatus=fuzzNodeData(100, 1, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(100, 1, 0.80, 0.12, 0.08)
+				devStatus=fuzzNodeData(100, 1, onlineVariant, alertVariant, offlineVariant)
 		elif mOrganization.organization_id==2:
 			if outageChance > 92 and orgHit==2:
 				devStatus=fuzzNodeData(200, 2, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(200, 2, 0.98, 0.0, 0.02)
+				devStatus=fuzzNodeData(200, 2, onlineVariant, alertVariant, offlineVariant)
 		elif mOrganization.organization_id==3:
 			if outageChance > 92 and orgHit==3:
 				devStatus=fuzzNodeData(300, 3, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(300, 3, 0.72, 0.2, 0.08)
+				devStatus=fuzzNodeData(300, 3, onlineVariant, alertVariant, offlineVariant)
 		elif mOrganization.organization_id==4:
 			if outageChance > 92 and orgHit==4:
 				devStatus=fuzzNodeData(500, 4, 0.0, 0.3, 0.7)
 			else:
-				devStatus=fuzzNodeData(500, 4, 0.93, 0.02, 0.05)
+				devStatus=fuzzNodeData(500, 4, onlineVariant, alertVariant, offlineVariant)
 	totalDevices = len(devStatus)
 	orgChange = False
 	orgExists = False
