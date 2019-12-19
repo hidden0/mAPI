@@ -165,6 +165,10 @@ def buildDashboards(orgName, orgId, totalDev):
 		orgName+" Offline": "red",
 		orgName+" Online Change": "purple"
 	}
+
+	# Scale adjustment for large orgs
+	if totalDev > 1000:
+		dashboard['panels'][0]['yaxes'][0]['logBase']=2
 	slackInt = False
 
 	# Check for a file existing
